@@ -33,6 +33,7 @@ namespace Poultry.Farm.MIS
                 endpoints.MapGet("/", async context =>
                 {
                     await context.Response.WriteAsync("Hello World!");
+                   // await context.Response.WriteAsync(System.Diagnostics.Process.GetCurrentProcess().ProcessName); To check which  process is hosting and running app
                 });
             });
         }
