@@ -1,0 +1,69 @@
+﻿@*model Directive for making view  Strongly typed*@
+@*@model Poultry.Farm.MIS.Models.Employee*@
+@model HomeDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+@{
+    //Layout = "~/Views/Shared/_Layout.cshtml Use Layout directive to add layout or make use _ViewsStart.cshtml to add layout";
+    ViewBag.Title = "Employee Details";
+}
+
+@*Fetching Data with ViewData*@
+<h3>@ViewData["PageTitle"]</h3>
+@{
+    var employee = ViewData["Employee"] as Poultry.Farm.MIS.Models.Employee;
+}
+<Div>
+    Name: @employee.Name
+</Div>
+<Div>
+    Email: @employee.Email
+</Div>
+<Div>
+    Department: @employee.Department
+</Div>
+
+
+@*Same thing with ViewBag*@
+
+<h3>@ViewBag.PageTitle</h3>
+
+<Div>
+    Name: @ViewBag.Employee.Name
+</Div>
+<Div>
+    Email: @ViewBag.Employee.Email
+</Div>
+<Div>
+    Department: @ViewBag.Employee.Department
+</Div>
+
+@*Fetching Data by making strongly typed View*@
+
+@*<h3>@ViewBag.PageTitle</h3>
+
+    <Div>
+        Name: @Model.Name
+    </Div>
+    <Div>
+        Email: @Model.Email
+    </Div>
+    <Div>
+        Department: @Model.Department
+    </Div>*@
+
+@*Fetching Data with  ViewModel *@
+<h3>@Model.PageTitle</h3>
+
+<Div>
+    Name: @Model.Employee.Name
+</Div>
+<Div>
+    Email: @Model.Employee.Email
+</Div>
+<Div>
+    Department: @Model.Employee.Department
+</Div>
+
+
