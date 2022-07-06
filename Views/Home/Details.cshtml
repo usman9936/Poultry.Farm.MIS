@@ -1,0 +1,45 @@
+﻿@model HomeDetailsViewModel
+@{
+    ViewData["Title"] = "Details";
+}
+
+
+
+@*Fetching Data with  ViewModel *@
+@*<h3>@Model.PageTitle</h3>
+
+<Div>
+    Name: @Model.Employee.Name
+</Div>
+<Div>
+    Email: @Model.Employee.Email
+</Div>
+<Div>
+    Department: @Model.Employee.Department
+</Div>*@
+
+<div class="row justify-content-center m-3">
+    <div class="col-sm-8">
+        <div class="card">
+            <div class="card-header">
+                <h1>@Model.Employee.Name</h1>
+            </div>
+
+            <div class="card-body text-center">
+                <img class="card-img-top" src="~/images/No_image.jpg" />
+
+                <h4>Employee ID: @Model.Employee.EmployeeId</h4>
+                <h4>Email ID: @Model.Employee.Email</h4>
+                <h4>Department: @Model.Employee.Department</h4>
+            </div> 
+            <div class="card-footer text-center">
+
+                <a asp-controller="home" asp-action="index" class="btn btn-primary">Back</a>
+                <a href="#" class="btn btn-primary">Edit</a>
+                <a href="#" class="btn btn-primary">Delete</a>
+            </div> 
+        </div>
+    </div>
+</div>
+
+
