@@ -9,6 +9,8 @@ namespace Poultry.Farm.MIS.Models
     {
         Employee GetEmployee(int id);
         IEnumerable<Employee> GetEmployees();
-        Employee CreateEmployee(Employee employee);
+        Employee Add(Employee employee);
+        Employee Update(Employee employee);
+        Employee Delete(int id);
     }
 }

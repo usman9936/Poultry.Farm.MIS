@@ -15,6 +15,7 @@ namespace Poultry.Farm.MIS.Models
         [RegularExpression(@"^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$",ErrorMessage = "Invalid email format")]
         [Required]
         public string Email { get; set; }
-        public Departments Department { get; set; }
+        [Required]
+        public Departments? Department { get; set; }
     }
 }
