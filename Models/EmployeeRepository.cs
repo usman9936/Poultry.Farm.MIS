@@ -7,7 +7,7 @@ namespace Poultry.Farm.MIS.Models
 {
     public class EmployeeRepository : IEmployeeRepository
     {
-        public List<Employee> _employeeList;
+        private List<Employee> _employeeList;
 
         public EmployeeRepository()
         {
@@ -38,11 +38,16 @@ namespace Poultry.Farm.MIS.Models
                 };
         }
 
-        public Employee CreateEmployee(Employee employee)
+        public Employee Add(Employee employee)
         {
             employee.EmployeeId = _employeeList.Max(e => e.EmployeeId) + 1;
             _employeeList.Add(employee);
             return employee;
+        }
+
+        public Employee Delete(int id)
+        {
+            throw new NotImplementedException();
         }
 
         public Employee GetEmployee(int id)
@@ -53,6 +58,11 @@ namespace Poultry.Farm.MIS.Models
         public IEnumerable<Employee> GetEmployees()
         {
             return _employeeList;
+        }
+
+        public Employee Update(Employee employee)
+        {
+            throw new NotImplementedException();
         }
     }
 }

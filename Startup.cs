@@ -1,6 +1,8 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Poultry.Farm.MIS.Models;
@@ -13,12 +15,24 @@ namespace Poultry.Farm.MIS
 {
     public class Startup
     {
+
         // This method gets called by the runtime. Use this method to add services to the container.
         // For more information on how to configure your application, visit https://go.microsoft.com/fwlink/?LinkID=398940
+        private IConfiguration _config;
+        public Startup(IConfiguration configuration)
+        {
+            _config = configuration;
+        }
         public void ConfigureServices(IServiceCollection services)
         {
+            //Telling .Net that what db we are going to use and DbConnection is defined in Appsetting
+            services.AddDbContextPool<AppDbContext>(options =>
+            options.UseSqlServer(_config.GetConnectionString("DbConnection")));
+
             services.AddMvc();
-            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();
+            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();//In memory repository of Employees
+            services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();//SQL repository of Employees
+
             services.AddControllers(options => options.EnableEndpointRouting = false);
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
         }

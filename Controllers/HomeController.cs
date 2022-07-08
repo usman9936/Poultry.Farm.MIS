@@ -45,7 +45,7 @@ namespace Poultry.Farm.MIS.Controllers
         {
             if (ModelState.IsValid)
             {
-                Employee newEmployee = _employeeRepository.CreateEmployee(employee);
+                Employee newEmployee = _employeeRepository.Add(employee);
                 return RedirectToAction("Details", new { id = newEmployee.EmployeeId });
             }
             return View();
