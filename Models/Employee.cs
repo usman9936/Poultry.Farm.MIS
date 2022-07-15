@@ -17,5 +17,6 @@ namespace Poultry.Farm.MIS.Models
         public string Email { get; set; }
         [Required]
         public Departments? Department { get; set; }
+        public string PhotoPath { get; set; }
     }
 }

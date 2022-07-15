@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 
 namespace Poultry.Farm.MIS.Models
 {
@@ -16,7 +17,9 @@ namespace Poultry.Farm.MIS.Models
 
     //Finally, execute Update-Database command to apply the above migration to the database.
 
-    public class AppDbContext : DbContext
+    //Your application DbContext class must inherit from IdentityDbContext class instead of DbContext class. This is required because IdentityDbContext provides all the DbSet properties needed to manage the identity tables in SQL Server. We will see all the tables that the asp.net core identity framework generates in just a bit. If you go through the hierarchy chain of IdentityDbContext class, you will see it inherits from DbContext class. So this is the reason you do not have to explicitly inherit from DbContext class if your class is inheriting from IdentityDbContext class.
+
+    public class AppDbContext : IdentityDbContext
     {
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options)
         {
@@ -24,7 +27,13 @@ namespace Poultry.Farm.MIS.Models
         }
         public DbSet<Employee> Employees { get; set; }
 
-        
+        ////Seed data by making an extension class to keep AppDbContext clean
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            modelBuilder.Seed();
+        }
+
         //Seed data within AppDbContext File
         //protected override void OnModelCreating(ModelBuilder modelBuilder)
         //{
@@ -45,11 +54,5 @@ namespace Poultry.Farm.MIS.Models
         //        }
         //    );
         //}
-
-        ////Seed data by making an extension class to keep AppDbContext clean
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
-        {
-         modelBuilder.Seed();
-        }
     }
 }
