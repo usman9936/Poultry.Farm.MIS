@@ -26,8 +26,15 @@ using Poultry.Farm.MIS.ViewModels;
 #line default
 #line hidden
 #nullable disable
+#nullable restore
+#line 3 "C:\Users\ftc\source\repos\Poultry.Farm.MIS\Poultry.Farm.MIS\Views\_ViewImports.cshtml"
+using Microsoft.AspNetCore.Identity;
+
+#line default
+#line hidden
+#nullable disable
     [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"1d4a72b385df0156a075be2dec6e2868c048beae", @"/Views/Home/Sample.cshtml")]
-    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"9af312f53eac26af05da400b9e734cc6d51af7f6", @"/Views/_ViewImports.cshtml")]
+    [global::Microsoft.AspNetCore.Razor.Hosting.RazorSourceChecksumAttribute(@"SHA1", @"6b97572816b4abf01f739a5a8514180435a32117", @"/Views/_ViewImports.cshtml")]
     #nullable restore
     public class Views_Home_Sample : global::Microsoft.AspNetCore.Mvc.Razor.RazorPage<HomeDetailsViewModel>
     #nullable disable

@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Authorization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -25,12 +28,42 @@ namespace Poultry.Farm.MIS
         }
         public void ConfigureServices(IServiceCollection services)
         {
+            //AddIdentity() method adds the default identity system configuration for the specified user and role types.
+            services.AddIdentity<IdentityUser, IdentityRole>()
+            .AddEntityFrameworkStores<AppDbContext>();
+
+
+            //We can override password default settings in asp.net core identity by, using the Configure() method of the IServiceCollection interface in the ConfigureServices() method of the Startup class like below
+
+            services.Configure<IdentityOptions>(options =>
+            {
+                options.Password.RequiredLength = 8;
+                options.Password.RequiredUniqueChars = 3;
+                options.Password.RequireNonAlphanumeric = false;
+            });
+
+            //or we can also do this while adding Identity services
+            //services.AddIdentity<IdentityUser, IdentityRole>(options =>
+            //{
+            //    options.Password.RequiredLength = 10;
+            //    options.Password.RequiredUniqueChars = 3;
+            //    options.Password.RequireNonAlphanumeric = false;
+            //}).AddEntityFrameworkStores<AppDbContext>();
+
             //Telling .Net that what db we are going to use and DbConnection is defined in Appsetting
             services.AddDbContextPool<AppDbContext>(options =>
             options.UseSqlServer(_config.GetConnectionString("DbConnection")));
 
-            services.AddMvc();
-            services.AddSingleton<IEmployeeRepository, EmployeeRepository>();//In memory repository of Employees
+            //services.AddMvc();
+            //To apply [Authorize] attribute globally on all controllers and controller actions throughout your application
+            //modify the code in ConfigureServices method of the Startup class.
+            services.AddMvc(config => {
+                var policy = new AuthorizationPolicyBuilder()
+                                .RequireAuthenticatedUser()
+                                .Build();
+                config.Filters.Add(new AuthorizeFilter(policy));
+            });
+            //services.AddSingleton<IEmployeeRepository, EmployeeRepository>();//In memory repository of Employees
             services.AddScoped<IEmployeeRepository, SQLEmployeeRepository>();//SQL repository of Employees
 
             services.AddControllers(options => options.EnableEndpointRouting = false);
@@ -51,9 +84,21 @@ namespace Poultry.Farm.MIS
                 
                 app.UseDeveloperExceptionPage(developerExceptionPageOptions); //Enable exceptions window in browser to trace errors and should be registered as early as possible
             }
+            else
+            {
+                //UseStatusCodePagesWithRedirects middleware component intercepts the 404 status code and as the name implies, issues a redirect to the provided error path (in our case "/Error/404")
 
-            
+                //app.UseStatusCodePagesWithRedirects("/Error/{0}");
+
+                //This is a clever piece of middleware. As the name implies it re-executes the pipeline keeping the correct (404) status code. It just returns the custom view (NotFound) HTML
+                //As it is just re - executing the pipeline and not issuing a redirect request, we also preserve the original URL(/ foo / bar) in the address bar.It does not change from / foo / bar to / Error / 404.
+                app.UseStatusCodePagesWithReExecute("/Error/{0}");
+            }
+
+
             app.UseRouting();
+
+            app.UseAuthentication();
 
             //app.UseMvcWithDefaultRoute(); set the default route request processing which is by default home controller and index action method
 
@@ -62,6 +107,12 @@ namespace Poultry.Farm.MIS
             {
                 routes.MapRoute("default", "{controller=home}/{action=index}/{id?}");
             });
+
+            //or anyother route in our case its login page
+            //app.UseMvc(routes =>
+            //{
+            //    routes.MapRoute("default", "{controller=account}/{action=login}");
+            //});
 
             app.UseStaticFiles();
             //app.UseEndpoints(endpoints =>
